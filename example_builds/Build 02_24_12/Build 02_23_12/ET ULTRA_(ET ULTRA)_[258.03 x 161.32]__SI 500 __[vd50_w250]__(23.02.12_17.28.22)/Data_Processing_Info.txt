@@ -1,0 +1,51 @@
+-------------- Data processing information sheet ------------
+
+-------------------------------------------------------------
+
+Machine settings:
+ o Machine type       : ET ULTRA
+ o Resolution (pixel) : 1920 x 1200
+ o Platform size (mm) : 258.03 x 161.32
+
+-------------------------------------------------------------
+
+Material settings:
+ o Material type      : SI 500 
+
+-------------------------------------------------------------
+
+Scene informations:
+ o Scene dimensions:
+    - x-Axis (mm): 130.48 [+1.00, +131.48]
+    - y-Axis (mm): 127.66 [+1.00, +128.66]
+    - z-Axis (mm): 159.66 [+0.00, +159.66]
+ o Processed data:
+    - Model   No.1: 3DSHAPE_part.stl
+    - Perfactory Support No.1: 3DSHAPE_part_s.stl
+
+-------------------------------------------------------------
+
+Raster settings:
+ o Voxel depth:
+     -  50 µm in range [0.00 - 159.66) mm
+ o Number of voxel data sets: 3193
+
+-------------------------------------------------------------
+
+Voxel conversion settings       :
+ o Converter type               : 'DBS v2.7'
+ o Buildfilter version          : '2.7 Ultra/Xede/Xtreme'
+ o Plugin DLL version           : '2.7.1468.1101'
+ o Buildfilter type          : 'Xede/Xtreme'
+ o Number solid base plates     : 0
+ o Height of burn-in range      : 2
+ o Height of stardard range     : 3191
+ o Perfactory Support widening (µm)       : 250
+ o Perfactory Support base widening (µm)  : 1500
+ o Perfactory Support base height (µm)     : 500
+ o ERM module                    : Not activated
+ o Number of active voxel      : 0
+ o Number of billed voxel      : 151853890
+
+-------------------------------------------------------------
+

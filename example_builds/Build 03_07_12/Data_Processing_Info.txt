@@ -1,0 +1,57 @@
+-------------- Data processing information sheet ------------
+
+-------------------------------------------------------------
+
+Machine settings:
+ o Machine type       : ET ULTRA
+ o Resolution (pixel) : 1920 x 1200
+ o Platform size (mm) : 258.03 x 161.32
+
+-------------------------------------------------------------
+
+Material settings:
+ o Material type      : SI 500 
+
+-------------------------------------------------------------
+
+Scene informations:
+ o Scene dimensions:
+    - x-Axis (mm): 194.30 [+1.00, +195.30]
+    - y-Axis (mm): 156.02 [+0.86, +156.88]
+    - z-Axis (mm): 163.94 [+0.00, +163.94]
+ o Processed data:
+    - Model   No.1: part1.stl
+    - Model   No.2: part2.stl
+    - Model   No.3: ramirez_part.stl
+    - Model   No.4: ramirez_part_(2).stl
+    - Perfactory Support No.1: part1_s.stl
+    - Perfactory Support No.2: part2_s.stl
+    - Perfactory Support No.3: ramirez_part_s.stl
+    - Perfactory Support No.4: ramirez_part_s_(2).stl
+
+-------------------------------------------------------------
+
+Raster settings:
+ o Voxel depth:
+     -  50 µm in range [0.00 - 163.94) mm
+ o Number of voxel data sets: 3279
+
+-------------------------------------------------------------
+
+Voxel conversion settings       :
+ o Converter type               : 'DBS v2.7'
+ o Buildfilter version          : '2.7 Ultra/Xede/Xtreme'
+ o Plugin DLL version           : '2.7.1468.1101'
+ o Buildfilter type          : 'Xede/Xtreme'
+ o Number solid base plates     : 0
+ o Height of burn-in range      : 2
+ o Height of stardard range     : 3277
+ o Perfactory Support widening (µm)       : 250
+ o Perfactory Support base widening (µm)  : 1500
+ o Perfactory Support base height (µm)     : 500
+ o ERM module                    : Not activated
+ o Number of active voxel      : 0
+ o Number of billed voxel      : 329901276
+
+-------------------------------------------------------------
+
