@@ -1,6 +1,6 @@
 # Z_Builder
 
-This is a program for the Z_Builder at MWERKS. 
+This is a program for the Z_Builder at M-WERX. 
 
 
 Goals of this software:
