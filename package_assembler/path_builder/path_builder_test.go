@@ -2,7 +2,7 @@
 * @Author: Ximidar
 * @Date:   2018-08-11 14:10:11
 * @Last Modified by:   Ximidar
-* @Last Modified time: 2018-08-18 19:58:28
+* @Last Modified time: 2018-08-19 13:28:14
 */
 
 package path_builder_test
@@ -21,7 +21,7 @@ import (
 func Test_AlterPath(t *testing.T) {
 	pb := path_builder.NewPathBuilder()
 
-	test_path := pb.AlterPath("/test/this/item.png")
+	test_path := pb.AlterPath("/test/this/item.png", 5000)
 
 	if test_path != `<file = "C:\Program Files\Vanquish\$$RecentJob\ET ULTRA_(ET ULTRA)_[258.03 x 161.32]__SI 500 __[vd50_w250]__(12.03.12_16.44.52)\item.png" expose_time = 5000 add = 1>` + "\n"{
 		t.Fatal("AlterPath did not assemble the string correctly")
@@ -63,6 +63,9 @@ func Test_Image_Processing(t *testing.T){
 
 	// Create path builder
 	pb := path_builder.NewPathBuilder()
+	pb.First_x_Layers = 5
+	pb.First_x_bake_time = 10000
+	pb.Regular_bake_time = 2000
 
 	// open test dir
 	test_dir := test_path + "/vds_.slice/" //open the directory with pictures

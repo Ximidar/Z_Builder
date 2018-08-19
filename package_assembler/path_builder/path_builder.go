@@ -2,7 +2,7 @@
 * @Author: Ximidar
 * @Date:   2018-08-11 14:10:01
 * @Last Modified by:   Ximidar
-* @Last Modified time: 2018-08-18 20:11:36
+* @Last Modified time: 2018-08-19 13:26:51
 */
 package path_builder
 
@@ -20,10 +20,19 @@ import (
 type PathBuilder struct{
 	ImagePaths []string
 	FolderPath string
+
+	//bake in vars
+	First_x_Layers int
+	First_x_bake_time int
+	Regular_bake_time int
 }
 
 func NewPathBuilder() *PathBuilder{
 	pb := new(PathBuilder)
+
+	pb.First_x_Layers = 10
+	pb.First_x_bake_time = 5000
+	pb.Regular_bake_time = 1000
 
 	return pb
 }
@@ -38,6 +47,7 @@ func (pb *PathBuilder) Open_Folder(folderpath string) (error){
 	}
 
 	pb.FolderPath = folderpath
+	image_counter := 0
 
 	// process images
 	err = filepath.Walk(pb.FolderPath, func(filepath string, info os.FileInfo, err error) error {
@@ -51,11 +61,20 @@ func (pb *PathBuilder) Open_Folder(folderpath string) (error){
 		}
 
 		// Process image file
-		new_path := pb.AlterPath(filepath)
+		var new_path string
+		if image_counter < pb.First_x_Layers{
+			new_path = pb.AlterPath(filepath, pb.First_x_bake_time)
+		} else {
+			new_path = pb.AlterPath(filepath, pb.Regular_bake_time)
+		}
+		
 		pb.ImagePaths = append(pb.ImagePaths, new_path)		
+		image_counter += 1
 		
 		return nil
 	})
+
+	fmt.Printf("Processed %v images!\n", image_counter)
 
 	if err != nil {
 		fmt.Printf("error walking the path %q: %v\n", folderpath, err)
@@ -114,17 +133,14 @@ func (pb *PathBuilder) Create_Static_Files() (error){
 	This function needs to return a string like the one above. Mostly this just needs to 
 	add the name of the png to a string
 */
-func (pb *PathBuilder) AlterPath(filepath string) (string){
+func (pb *PathBuilder) AlterPath(filepath string, expose_time int) (string){
 
 	// Get the basename
 	filename := path.Base(filepath)
 
-	// Get expose time
-	expose_time := "5000" // TODO add function to calculate expose time
-
 	// construct the string
-	Z_path := fmt.Sprintf(`<file = "C:\Program Files\Vanquish\$$RecentJob\ET ULTRA_(ET ULTRA)_[258.03 x 161.32]__SI 500 __[vd50_w250]__(12.03.12_16.44.52)\%s" expose_time = %s add = %s>`,
-		filename, expose_time, "1")
+	Z_path := fmt.Sprintf(`<file = "C:\Program Files\Vanquish\$$RecentJob\ET ULTRA_(ET ULTRA)_[258.03 x 161.32]__SI 500 __[vd50_w250]__(12.03.12_16.44.52)\%s" expose_time = %v add = 1>`,
+		filename, expose_time)
 	Z_path += "\n"
 
 	fmt.Printf("Altering %s to %s\n", filepath, Z_path)
