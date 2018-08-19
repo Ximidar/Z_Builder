@@ -2,7 +2,7 @@
 * @Author: Ximidar
 * @Date:   2018-08-11 14:10:11
 * @Last Modified by:   Ximidar
-* @Last Modified time: 2018-08-18 16:48:21
+* @Last Modified time: 2018-08-18 19:12:28
 */
 
 package path_builder_test
@@ -23,7 +23,7 @@ func Test_AlterPath(t *testing.T) {
 
 	test_path := pb.AlterPath("/test/this/item.png")
 
-	if test_path != `<file = "C:\Program Files\Vanquish\$$RecentJob\ET ULTRA_(ET ULTRA)_[258.03 x 161.32]__SI 500 __[vd50_w250]__(12.03.12_16.44.52)\item.png" expose_time = 5000 add = 1>`{
+	if test_path != `<file = "C:\Program Files\Vanquish\$$RecentJob\ET ULTRA_(ET ULTRA)_[258.03 x 161.32]__SI 500 __[vd50_w250]__(12.03.12_16.44.52)\item.png" expose_time = 5000 add = 1>` + "\n"{
 		t.Fatal("AlterPath did not assemble the string correctly")
 	}
 }
@@ -102,6 +102,20 @@ func Make_Temp_Test() (string, error){
 	err := CopyDir(path_to_builds, temp_test_path)
 	if err != nil{
 		return "",err
+	}
+
+	// Delete build info
+
+
+
+	file_to_delete := []string{temp_test_path + "/vds_.slice/Data_Processing_Info.txt",
+							   temp_test_path + "/vds_.slice/Jobinfo.txt",
+							   temp_test_path + "/vds_.slice/BuildList.txt",
+							}
+
+	for _, file := range file_to_delete {
+		fmt.Printf("Removing file %v\n", file)
+		os.Remove(file)
 	}
 
 	return temp_test_path, nil
