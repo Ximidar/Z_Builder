@@ -2,7 +2,7 @@
 * @Author: Ximidar
 * @Date:   2018-08-11 14:10:01
 * @Last Modified by:   Ximidar
-* @Last Modified time: 2018-08-18 19:12:15
+* @Last Modified time: 2018-08-18 19:15:53
 */
 package path_builder
 
@@ -13,7 +13,6 @@ import (
 	"errors"
 	"path/filepath"
 	"bufio"
-	"strings"
 )
 
 type PathBuilder struct{
@@ -81,8 +80,7 @@ func (pb *PathBuilder) Create_Static_Files() (error){
 
 	// Create Static files DPI and JI
 	DPI_path := path.Clean(pb.FolderPath + "/Data_Processing_Info.txt")
-	DPI_file := strings.Split(data_processing_info, "\n")
-	err := pb.create_file_at(DPI_path, DPI_file...)
+	err := pb.create_file_at(DPI_path, data_processing_info)
 
 	if err != nil{
 		return err
