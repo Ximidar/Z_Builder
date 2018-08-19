@@ -2,7 +2,7 @@
 * @Author: Ximidar
 * @Date:   2018-08-11 14:10:01
 * @Last Modified by:   Ximidar
-* @Last Modified time: 2018-08-18 19:15:53
+* @Last Modified time: 2018-08-18 20:11:36
 */
 package path_builder
 
@@ -14,6 +14,8 @@ import (
 	"path/filepath"
 	"bufio"
 )
+
+/********** PathBuilder **********/
 
 type PathBuilder struct{
 	ImagePaths []string
@@ -150,7 +152,7 @@ func (pb PathBuilder) check_folder_integrity(folderpath string) (error){
 }
 
 func (pb PathBuilder) create_file_at(dest string, file_data... string) (error){
-	fmt.Printf("Creating File at %v", dest)
+	fmt.Printf("Creating File at %v\n", dest)
 	file, err := os.Create(dest)
 
 	if err != nil{
