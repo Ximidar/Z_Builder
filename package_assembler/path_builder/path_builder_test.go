@@ -3,19 +3,18 @@
 * @Date:   2018-08-11 14:10:11
 * @Last Modified by:   Ximidar
 * @Last Modified time: 2018-08-19 13:28:14
-*/
+ */
 
 package path_builder_test
 
 import (
-	"testing"
-	"os"
-	"github.com/ximidar/Z_Builder/package_assembler/path_builder"
 	"fmt"
-	"path/filepath"
-	"io/ioutil"
+	"github.com/ximidar/Z_Builder/package_assembler/path_builder"
 	"io"
-
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"testing"
 )
 
 func Test_AlterPath(t *testing.T) {
@@ -23,23 +22,22 @@ func Test_AlterPath(t *testing.T) {
 
 	test_path := pb.AlterPath("/test/this/item.png", 5000)
 
-	if test_path != `<file = "C:\Program Files\Vanquish\$$RecentJob\ET ULTRA_(ET ULTRA)_[258.03 x 161.32]__SI 500 __[vd50_w250]__(12.03.12_16.44.52)\item.png" expose_time = 5000 add = 1>` + "\n"{
+	if test_path != `<file = "C:\Program Files\Vanquish\$$RecentJob\ET ULTRA_(ET ULTRA)_[258.03 x 161.32]__SI 500 __[vd50_w250]__(12.03.12_16.44.52)\item.png" expose_time = 5000 add = 1>`+"\n" {
 		t.Fatal("AlterPath did not assemble the string correctly")
 	}
 }
 
-
-func Test_valid_paths(t *testing.T){
+func Test_valid_paths(t *testing.T) {
 	pb := path_builder.NewPathBuilder()
 
 	err := pb.Open_Folder("/fake/path/")
 
-	if err == nil{
+	if err == nil {
 		t.Fatal("Entered a fake path and it did not return with an error")
 	}
 
 	file, err := os.Create("/tmp/tempfile.txt")
-	if err != nil{
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -47,12 +45,12 @@ func Test_valid_paths(t *testing.T){
 
 	err = pb.Open_Folder("/tmp/tempfile.txt")
 
-	if err == nil{
+	if err == nil {
 		t.Fatal("Entered a file path and it did not return with an error")
 	}
 }
 
-func Test_Image_Processing(t *testing.T){
+func Test_Image_Processing(t *testing.T) {
 	test_path, err := Make_Temp_Test()
 
 	if err != nil {
@@ -79,7 +77,7 @@ func Test_Image_Processing(t *testing.T){
 /********** Helpers **********/
 
 // This function will take from the example_builds and make a test in /tmp/
-func Make_Temp_Test() (string, error){
+func Make_Temp_Test() (string, error) {
 
 	path_to_builds := "/home/ximidar/workspace/Z_Builder/example_builds/End_Cap" // Change this path for your test env
 	temp_test_path := "/tmp/temp_build/"
@@ -89,7 +87,7 @@ func Make_Temp_Test() (string, error){
 	if _, err := os.Stat(temp_test_path); os.IsNotExist(err) {
 		// make temp dir
 		mkdirerr := os.MkdirAll(temp_test_path, os.ModePerm)
-		if mkdirerr != nil{
+		if mkdirerr != nil {
 			return "", err
 		}
 	} else {
@@ -99,22 +97,19 @@ func Make_Temp_Test() (string, error){
 			return "", err
 		}
 	}
-	
 
 	//copy src dir to test dir
 	err := CopyDir(path_to_builds, temp_test_path)
-	if err != nil{
-		return "",err
+	if err != nil {
+		return "", err
 	}
 
 	// Delete build info
 
-
-
 	file_to_delete := []string{temp_test_path + "/vds_.slice/Data_Processing_Info.txt",
-							   temp_test_path + "/vds_.slice/Jobinfo.txt",
-							   temp_test_path + "/vds_.slice/BuildList.txt",
-							}
+		temp_test_path + "/vds_.slice/Jobinfo.txt",
+		temp_test_path + "/vds_.slice/BuildList.txt",
+	}
 
 	for _, file := range file_to_delete {
 		fmt.Printf("Removing file %v\n", file)

@@ -3,31 +3,31 @@
 * @Date:   2018-08-11 14:10:01
 * @Last Modified by:   Ximidar
 * @Last Modified time: 2018-08-19 13:26:51
-*/
+ */
 package path_builder
 
 import (
-	"fmt"
-	"path"
-	"os"
-	"errors"
-	"path/filepath"
 	"bufio"
+	"errors"
+	"fmt"
+	"os"
+	"path"
+	"path/filepath"
 )
 
 /********** PathBuilder **********/
 
-type PathBuilder struct{
+type PathBuilder struct {
 	ImagePaths []string
 	FolderPath string
 
 	//bake in vars
-	First_x_Layers int
+	First_x_Layers    int
 	First_x_bake_time int
 	Regular_bake_time int
 }
 
-func NewPathBuilder() *PathBuilder{
+func NewPathBuilder() *PathBuilder {
 	pb := new(PathBuilder)
 
 	pb.First_x_Layers = 10
@@ -38,11 +38,11 @@ func NewPathBuilder() *PathBuilder{
 }
 
 // This function will open the supplied folder and process all the images inside of it.
-func (pb *PathBuilder) Open_Folder(folderpath string) (error){
+func (pb *PathBuilder) Open_Folder(folderpath string) error {
 
 	// Check if path is valid
 	err := pb.check_folder_integrity(folderpath)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -55,22 +55,22 @@ func (pb *PathBuilder) Open_Folder(folderpath string) (error){
 			fmt.Printf("Unable to Access File: %v: %v\n", filepath, err)
 			return err
 		}
-		
+
 		if info.IsDir() {
 			return nil //skip any directories. I only want the files in the directory
 		}
 
 		// Process image file
 		var new_path string
-		if image_counter < pb.First_x_Layers{
+		if image_counter < pb.First_x_Layers {
 			new_path = pb.AlterPath(filepath, pb.First_x_bake_time)
 		} else {
 			new_path = pb.AlterPath(filepath, pb.Regular_bake_time)
 		}
-		
-		pb.ImagePaths = append(pb.ImagePaths, new_path)		
+
+		pb.ImagePaths = append(pb.ImagePaths, new_path)
 		image_counter += 1
-		
+
 		return nil
 	})
 
@@ -84,7 +84,7 @@ func (pb *PathBuilder) Open_Folder(folderpath string) (error){
 	// Create the static files
 	err = pb.Create_Static_Files()
 
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -97,20 +97,20 @@ Data_Processing_Info.txt
 Jobinfo.txt
 BuildList.txt
 */
-func (pb *PathBuilder) Create_Static_Files() (error){
+func (pb *PathBuilder) Create_Static_Files() error {
 
 	// Create Static files DPI and JI
 	DPI_path := path.Clean(pb.FolderPath + "/Data_Processing_Info.txt")
 	err := pb.create_file_at(DPI_path, data_processing_info)
 
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	JI_path := path.Clean(pb.FolderPath + "/Jobinfo.txt")
 	err = pb.create_file_at(JI_path, job_info)
 
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -118,22 +118,20 @@ func (pb *PathBuilder) Create_Static_Files() (error){
 	BL_path := path.Clean(pb.FolderPath + "/BuildList.txt")
 	err = pb.create_file_at(BL_path, pb.ImagePaths...)
 
-	if err != nil{
+	if err != nil {
 		return err
 	}
-
 
 	return nil
 }
 
-
 /*
 	<file = "C:\Program Files\Vanquish\$$RecentJob\ET ULTRA_(ET ULTRA)_[258.03 x 161.32]__SI 500 __[vd50_w250]__(12.03.12_16.44.52)\vds_0000#0.png" expose_time = 50000 add = 1>
 
-	This function needs to return a string like the one above. Mostly this just needs to 
+	This function needs to return a string like the one above. Mostly this just needs to
 	add the name of the png to a string
 */
-func (pb *PathBuilder) AlterPath(filepath string, expose_time int) (string){
+func (pb *PathBuilder) AlterPath(filepath string, expose_time int) string {
 
 	// Get the basename
 	filename := path.Base(filepath)
@@ -150,28 +148,27 @@ func (pb *PathBuilder) AlterPath(filepath string, expose_time int) (string){
 
 }
 
-
 /*************** Helpers ***************/
 
-func (pb PathBuilder) check_folder_integrity(folderpath string) (error){
+func (pb PathBuilder) check_folder_integrity(folderpath string) error {
 	fi, err := os.Stat(folderpath)
-    if os.IsNotExist(err) {
-        mess := fmt.Sprintf("Could not get Stats of %s", folderpath)
-        return errors.New(mess)
-    }
-    mode := fi.Mode()
-    if mode.IsRegular(){
-	    mess := fmt.Sprintf("Path is a file, not a directory: %s", folderpath)
-	    return errors.New(mess)
-    }
-    return nil
+	if os.IsNotExist(err) {
+		mess := fmt.Sprintf("Could not get Stats of %s", folderpath)
+		return errors.New(mess)
+	}
+	mode := fi.Mode()
+	if mode.IsRegular() {
+		mess := fmt.Sprintf("Path is a file, not a directory: %s", folderpath)
+		return errors.New(mess)
+	}
+	return nil
 }
 
-func (pb PathBuilder) create_file_at(dest string, file_data... string) (error){
+func (pb PathBuilder) create_file_at(dest string, file_data ...string) error {
 	fmt.Printf("Creating File at %v\n", dest)
 	file, err := os.Create(dest)
 
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -179,21 +176,21 @@ func (pb PathBuilder) create_file_at(dest string, file_data... string) (error){
 
 	buf_writer := bufio.NewWriter(file)
 
-	for _, line := range file_data{
+	for _, line := range file_data {
 		expected_write := len(line)
 		actual_write, err := buf_writer.WriteString(line)
-    		
-		if err != nil{
+
+		if err != nil {
 			return err
 		}
-    	if expected_write != actual_write{
-    		mess := fmt.Sprintf("Expected bytes: %v Actual bytes: %v", expected_write, actual_write)
-    		return errors.New(mess)
-    	}
-	} 
+		if expected_write != actual_write {
+			mess := fmt.Sprintf("Expected bytes: %v Actual bytes: %v", expected_write, actual_write)
+			return errors.New(mess)
+		}
+	}
 
-    buf_writer.Flush()
-    return nil
+	buf_writer.Flush()
+	return nil
 }
 
 // Variables for writing
